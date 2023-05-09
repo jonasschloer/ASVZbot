@@ -1,0 +1,8 @@
+## Edit Sports. Find codes in URL!
+{"Kondi": 45675, "Fitness": 122920, "Bouldern": 45636, "Fussball": 45657, "Burner Games": 198478}
+## Edit Facilities. Find codes in URL!
+{"Irchel": 45577, "Hoengg": 45598, "Hoenggerberg": 45598, "Zentrum": 45594, "Polyterasse": 45594}
+## Edit Login Data
+{"username": "YOUR USERNAME HERE", "password": "YOUR PASSWORD HERE"}
+## Want to see the browser open? Change to True. Else, leave at False 
+True
