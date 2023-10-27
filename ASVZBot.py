@@ -11,6 +11,7 @@ Today
 18:15
 '''
 
+
 def settings():
     # open settings
     global NameID, FacilityID, LoginData, headless
@@ -19,12 +20,20 @@ def settings():
     # with open('{}'.format(Path().absolute() / 'ASVZ Bot' / 'settings.txt'), 'r') as f:
 
     # !!! If you run from batch, only this one works
-    with open("settings.txt") as f:
-        lines = f.readlines()
-        NameID = json.loads(lines[1])
-        FacilityID = json.loads(lines[3])
-        LoginData = json.loads(lines[5])
-        headless = not ('True' == lines[7])
+    try:
+        with open("settings_local.txt") as f:
+            lines = f.readlines()
+            NameID = json.loads(lines[1])
+            FacilityID = json.loads(lines[3])
+            LoginData = json.loads(lines[5])
+            headless = not ('True' == lines[7])
+    except FileNotFoundError:
+        with open("settings.txt") as f:
+            lines = f.readlines()
+            NameID = json.loads(lines[1])
+            FacilityID = json.loads(lines[3])
+            LoginData = json.loads(lines[5])
+            headless = not ('True' == lines[7])
 
 
 def read():
@@ -168,7 +177,7 @@ class Class:
                 web.get(self.url)
                 time.sleep(0.5)
                 return True
-        except:
+        except Exception:
             # print(r"¯\_(ツ)_/¯         ")
             time.sleep(0.2)
             if web.current_url != self.url:
@@ -185,7 +194,7 @@ class Class:
             enroll_element = web.find_element(by="css selector", value="#eventDetails > div > div.col-sm-4 > div > div.card-body.event-properties > app-lesson-properties-display > dl:nth-child(11) > dd").text
             if any(char.isdigit() for char in enroll_element):
                 enroll_time = enroll_element[4:20]
-        except:
+        except Exception:
             enroll_element = web.find_element(by="css selector", value="#eventDetails > div > div.col-sm-4 > div > div.card-body.event-properties > app-lesson-properties-display > dl:nth-child(10) > dd").text[4:20]
             if any(char.isdigit() for char in enroll_element):
                 enroll_time = enroll_element[4:20]
@@ -225,10 +234,10 @@ class Class:
                 enroll_button.click()
                 print("\x1b[32mRegistration Successful!", "\x1b[34m")
                 break
-            except:
+            except Exception:
                 print("\x1b[32mClicking" + (i % 4) * ".", "\x1b[34m", end="\r", flush=True)
                 i += 1
-                if(i > 500):
+                if (i > 500):
                     print("\x1b[32mSomething went horribly wrong :(", "\x1b[34m")
                     break
 
