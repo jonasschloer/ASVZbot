@@ -4,6 +4,12 @@ from selenium import webdriver
 from pathlib import Path
 import json
 
+'''
+Kondi
+Irchel
+Today
+18:15
+'''
 
 def settings():
     # open settings
@@ -92,12 +98,14 @@ class Class:
             options.add_argument("--headless")
         web = webdriver.Edge(executable_path=path, options=options)
 
+        url = f"https://asvz.ch/426-sportfahrplan?f[0]=sport:{NameID[self.sport]}&date={self.date}%20{self.time}&f[1]=facility:{FacilityID[self.facility]}"
+        print(f"\x1b[32mOpening {url}", "\x1b[34m")
         # Search for lesson
-        web.get(f"https://asvz.ch/426-sportfahrplan?f[0]=sport:{NameID[self.sport]}&date={self.date}%20{self.time}&f[1]=facility:{FacilityID[self.facility]}")
+        web.get(url)
         time.sleep(1)
 
         # return link to first earch result
-        lection = web.find_element(by="xpath", value='/html/body/div[2]/div[2]/main/div/div/div/div[1]/div[2]/div[4]/div[1]/div/ul/li[1]/a')
+        lection = web.find_element(by="xpath", value='//*[@id="block-asvz-next-content"]/div/div/div[2]/div[2]/div[1]/div/ul/li/a')
         self.url = str(lection.get_attribute('href'))
         lesson_name = web.find_element(by="css selector", value="div.teaser-list-calendar__day:nth-child(1) > div:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > a:nth-child(1) > div:nth-child(2) > div:nth-child(1) > h4:nth-child(1) > span:nth-child(1)").text
         lesson_date = web.find_element(by="css selector", value="div.teaser-list-calendar__day:nth-child(1) > div:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > a:nth-child(1) > div:nth-child(1) > div:nth-child(1)").text
@@ -172,12 +180,15 @@ class Class:
         time.sleep(0.5)
         now = datetime.datetime.now()
         enroll_time = ""
-        # find the element displaying enroll time (either child 10 or 11, depending if the name of the triner is given)
-        enroll_element = web.find_element(by="css selector", value="#eventDetails > div > div.col-sm-4 > div > div.card-body.event-properties > app-lesson-properties-display > dl:nth-child(10) > dd").text
-        if any(char.isdigit() for char in enroll_element):
-            enroll_time = enroll_element[4:20]
-        else:
-            enroll_time = web.find_element(by="css selector", value="#eventDetails > div > div.col-sm-4 > div > div.card-body.event-properties > app-lesson-properties-display > dl:nth-child(11) > dd").text[4:20]
+        # find the element displaying enroll time (either child 10 or 11, depending if the name of the trainer is given)
+        try: 
+            enroll_element = web.find_element(by="css selector", value="#eventDetails > div > div.col-sm-4 > div > div.card-body.event-properties > app-lesson-properties-display > dl:nth-child(11) > dd").text
+            if any(char.isdigit() for char in enroll_element):
+                enroll_time = enroll_element[4:20]
+        except:
+            enroll_element = web.find_element(by="css selector", value="#eventDetails > div > div.col-sm-4 > div > div.card-body.event-properties > app-lesson-properties-display > dl:nth-child(10) > dd").text[4:20]
+            if any(char.isdigit() for char in enroll_element):
+                enroll_time = enroll_element[4:20]
         # print(enroll_time)
         mon, day = 2, 2
         if (enroll_time[3] == "0"):
