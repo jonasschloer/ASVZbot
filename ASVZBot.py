@@ -190,7 +190,7 @@ class Class:
         now = datetime.datetime.now()
         enroll_time = ""
         # find the element displaying enroll time (either child 10 or 11, depending if the name of the trainer is given)
-        try: 
+        try:
             enroll_element = web.find_element(by="css selector", value="#eventDetails > div > div.col-sm-4 > div > div.card-body.event-properties > app-lesson-properties-display > dl:nth-child(11) > dd").text
             if any(char.isdigit() for char in enroll_element):
                 enroll_time = enroll_element[4:20]
